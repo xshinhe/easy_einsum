@@ -1,3 +1,5 @@
+#include "einsum.h"
+
 #include <algorithm>
 #include <chrono>
 #include <cstring>
@@ -6,8 +8,6 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-
-#include "einsum.h"
 
 /**
  * control the output printing format
@@ -30,12 +30,12 @@ constexpr inline int FMT_WIDTH(int X) { return X + 6; }
     })
 
 int main() {
-    std::size_t L = 2 * 2 * 2 * 2 * 3 * 3 * 3 * 3;
+    std::size_t      L = 2 * 2 * 2 * 2 * 3 * 3 * 3 * 3;
     std::vector<int> A(L, 0);
     for (int z = 0; z < L; ++z) { A[z] = z % 3 - (z % 5) * (z % 5) + (z % 7); }
     std::vector<int> res(L, 0);
     einsum("i", {A.data()}, {{L}}, res.data(), {L});
-    ARRAY_SHOW(res.data(), 1, 1);
+    ARRAY_SHOW(res.data(), 1, 10);
     einsum("i->", {A.data()}, {{L}}, res.data(), {1});
     ARRAY_SHOW(res.data(), 1, 1);
     einsum("ikkkji->j", {A.data()}, {{2, 3, 3, 3, 12, 2}}, res.data(), {12});
